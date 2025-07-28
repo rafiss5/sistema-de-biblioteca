@@ -107,7 +107,7 @@ public class TelaPrincipal extends JFrame {
 
     private void mostrarSobre() {
         JOptionPane.showMessageDialog(this,
-                "Sistema de Biblioteca\nVersão 1.0\n\nDesenvolvido por Rafael Lima e Kauã Lopes",
+                "Sistema de Biblioteca\nVersão 1.0\n\nDesenvolvido por Rafael Lima",
                 "Sobre",
                 JOptionPane.INFORMATION_MESSAGE);
     }
