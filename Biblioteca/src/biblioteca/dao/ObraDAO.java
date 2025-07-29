@@ -1,7 +1,13 @@
 package biblioteca.dao;
 
 import biblioteca.model.Obra;
+import biblioteca.model.Livro;
+import biblioteca.model.Revista;
+import biblioteca.model.Artigo;
+import biblioteca.util.RuntimeTypeAdapterFactory;
+
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
@@ -15,11 +21,12 @@ public class ObraDAO implements Persistivel<Obra> {
     private static final String CAMINHO_PASTA = "Dados das Obras";
     private static final String CAMINHO_ARQUIVO = CAMINHO_PASTA + "/obras.json";
 
-    private Gson conversorJson = new Gson();
+    private Gson conversorJson;
     private List<Obra> listaDeObras;
 
     public ObraDAO() {
         criarPastaSeNaoExistir();
+        configurarGson();
         listaDeObras = new ArrayList<>();
         carregarDados();
     }
@@ -31,10 +38,24 @@ public class ObraDAO implements Persistivel<Obra> {
         }
     }
 
+    private void configurarGson() {
+        RuntimeTypeAdapterFactory<Obra> adaptador = RuntimeTypeAdapterFactory
+                .of(Obra.class, "tipo")
+                .registerSubtype(Livro.class, "livro")
+                .registerSubtype(Revista.class, "revista")
+                .registerSubtype(Artigo.class, "artigo");
+
+        conversorJson = new GsonBuilder()
+                .registerTypeAdapterFactory(adaptador)
+                .setPrettyPrinting()
+                .create();
+    }
+
     private void carregarDados() {
         try (FileReader leitor = new FileReader(CAMINHO_ARQUIVO)) {
             Type tipoLista = new TypeToken<ArrayList<Obra>>(){}.getType();
             listaDeObras = conversorJson.fromJson(leitor, tipoLista);
+            System.out.println("✅ Obras carregadas do JSON: " + listaDeObras.size());
         } catch (Exception erro) {
             System.out.println("⚠ Não encontrei o arquivo de obras. Lista nova criada.");
             listaDeObras = new ArrayList<>();
