@@ -4,6 +4,7 @@ import biblioteca.model.Usuario;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Type;
@@ -11,21 +12,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioDAO implements Persistivel<Usuario> {
-    private static final String CAMINHO_ARQUIVO = "usuarios.json";
+    private static final String CAMINHO_PASTA = "Dados dos Usuários";
+    private static final String CAMINHO_ARQUIVO = CAMINHO_PASTA + "/usuarios.json";
     private Gson gson = new Gson();
     private List<Usuario> listaDeUsuarios;
 
     public UsuarioDAO() {
+        criarPastaSeNaoExistir();
         listaDeUsuarios = new ArrayList<>();
         carregarDados();
     }
 
+    private void criarPastaSeNaoExistir() {
+        File pasta = new File(CAMINHO_PASTA);
+        if (!pasta.exists()) {
+            pasta.mkdirs();
+        }
+    }
+
     private void carregarDados() {
         try (FileReader leitor = new FileReader(CAMINHO_ARQUIVO)) {
-            Type tipoLista = new TypeToken<ArrayList<Usuario>>(){}.getType();
+            Type tipoLista = new TypeToken<ArrayList<Usuario>>() {
+            }.getType();
             listaDeUsuarios = gson.fromJson(leitor, tipoLista);
         } catch (Exception erro) {
-            System.out.println("⚠️ Arquivo de usuários não encontrado. Criando lista nova.");
+            System.out.println("⚠ Arquivo de usuários não encontrado. Criando lista nova.");
             listaDeUsuarios = new ArrayList<>();
         }
 
@@ -56,10 +67,7 @@ public class UsuarioDAO implements Persistivel<Usuario> {
 
     @Override
     public Usuario buscarPorId(String id) {
-        return listaDeUsuarios.stream()
-                .filter(u -> u.getMatricula().equals(id))
-                .findFirst()
-                .orElse(null);
+        return listaDeUsuarios.stream().filter(u -> u.getMatricula().equals(id)).findFirst().orElse(null);
     }
 
     @Override
@@ -72,13 +80,10 @@ public class UsuarioDAO implements Persistivel<Usuario> {
         listaDeUsuarios.removeIf(u -> u.getMatricula().equals(id));
         salvarDados();
     }
-
-    // Método adicional para debug (opcional)
+    
     public void debugListaUsuarios() {
         System.out.println("=== USUÁRIOS CADASTRADOS ===");
-        listaDeUsuarios.forEach(u -> System.out.println(
-                u.getMatricula() + " | " + u.getNome() + " | " + u.getEmail()
-        ));
+        listaDeUsuarios.forEach(u -> System.out.println(u.getMatricula() + " | " + u.getNome() + " | " + u.getEmail()));
         System.out.println("Total: " + listaDeUsuarios.size() + " usuários");
     }
 }
