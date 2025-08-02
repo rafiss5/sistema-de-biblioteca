@@ -1,0 +1,11 @@
+[
+  {
+    "isbn": "1",
+    "edicao": 1,
+    "codigo": "111",
+    "titulo": "nsei",
+    "autor": "alisson",
+    "anoPublicacao": 2006,
+    "emprestado": true
+  }
+]

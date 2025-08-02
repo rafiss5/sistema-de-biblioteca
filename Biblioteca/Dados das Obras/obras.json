@@ -1,0 +1,11 @@
+[
+  {
+    "isbn": "1",
+    "edicao": 1,
+    "codigo": "2222",
+    "titulo": "projeto",
+    "autor": "alisson",
+    "anoPublicacao": 2008,
+    "emprestado": false
+  }
+]
