@@ -36,8 +36,6 @@ A biblioteca OpenPDF foi utilizada para gerar os relatórios. Cada relatório é
 Gerenciadas via Maven:
 
 xml
-Copiar
-Editar
 <dependencies>
     <!-- Geração de PDFs -->
     <dependency>
