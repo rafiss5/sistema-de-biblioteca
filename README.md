@@ -1,4 +1,5 @@
 📚 Sistema de Gerenciamento de Biblioteca Escolar
+
 Este projeto é um sistema desktop completo desenvolvido em Java como parte da disciplina Programação Orientada a Objetos (POO) da turma 2025.1, realizado pelo grupo formado por Adson Ruan, Kauã Lopes e Rafael Lima.
 
 O sistema tem como objetivo gerenciar empréstimos de livros em uma biblioteca escolar, permitindo o cadastro de obras, usuários, controle de empréstimos e geração de relatórios personalizados em PDF.
